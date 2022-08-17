@@ -25,9 +25,20 @@ elif [ "$1" == "instant-ngp" ]
     then
         docker build ./instant-ngp --no-cache -t instant-ngp:0.1 -t instant-ngp:latest
 
+elif [ "$1" == "torch3d" ]
+    then
+        if [ $# -eq 2 ]
+            then
+                # when it specified the version
+                docker build ./torch3d/torch_1.$2 -t torch3d:0.2.$2 -t torch3d:latest
+        else
+            # set default as 1.11
+            docker build ./torch3d/torch_1.11 -t torch3d:0.2.11 -t torch3d:latest
+        fi
+
 elif [ "$1" == "banmo" ]
     then
-        docker build ./banmo -t banmo:0.1 -t banmo:latest
+        docker build ./banmo --no-cache -t banmo:0.2 -t banmo:latest
 
 else
     echo "wrong argument"

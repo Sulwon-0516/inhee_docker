@@ -10,6 +10,7 @@ KAOLIN_WISP_SCREEN="kaolin-wisp-screen:latest"
 COLMAP="colmap:0.1"
 INSTANT_NGP="instant-ngp:latest"
 BANMO="banmo:latest"
+TORCH3D="torch3d:latest"
 SHM_SIZE="32gb"
 
 
@@ -218,6 +219,35 @@ elif [ "$1" == "banmo" ]
                     --gpus=all \
                     --name=$2 \
                     $BANMO
+        fi
+
+elif [ "$1" == "torch3d" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "torch3d"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    $TORCH3D
+        elif [ $# -eq 2 ]
+            then
+                echo "torch3d"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --name=$2 \
+                    $TORCH3D
         fi
 
 else
