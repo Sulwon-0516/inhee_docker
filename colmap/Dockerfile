@@ -38,6 +38,8 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y cmake libboo
     libatlas-base-dev \
     libsuitesparse-dev
 
+ENV PATH="/usr/local/cuda-11.4/bin:$PATH"
+
 WORKDIR /home
 RUN git clone --recursive https://ceres-solver.googlesource.com/ceres-solver
 WORKDIR /home/ceres-solver

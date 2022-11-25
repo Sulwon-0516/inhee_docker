@@ -11,13 +11,27 @@ COLMAP="colmap:0.1"
 INSTANT_NGP="instant-ngp:latest"
 BANMO="banmo:latest"
 TORCH3D="torch3d:latest"
-SHM_SIZE="32gb"
+DENSECORRES="densecorres:latest"
+STYLEGAN2ADA="sg2ada:latest"
+DETECTRON2="detectron2:latest"
+NEUMAN_PREPROCESS="neuman_preprocess:latest"
+PIFUHD="pifuhd:latest"
+NERFSTUDIO="nerfstudio:latest"
+NERFACC="nerfacc:latest"
+NGP_PL="ngp_pl:latest"
+TORCH_NGP="torch_ngp:latest"
+FRANKMOCAP="frankmocap:latest"
+
+
+DISPLAY=":1"
+SHM_SIZE="64gb"
+PORT="-p 12000:7010"
 
 
 if [ $# -eq 0 ]
     then 
         echo "argument : docker env to run"  
-elif [ $# -eq 1 ]
+elif [ $# -eq 1 ]   
     then
         echo "1 argumnet : we use default container name"
 fi
@@ -249,6 +263,387 @@ elif [ "$1" == "torch3d" ]
                     --name=$2 \
                     $TORCH3D
         fi
+        
+elif [ "$1" == "densecorres" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "densecorres"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    $DENSECORRES
+        elif [ $# -eq 2 ]
+            then
+                echo "densecorres"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --name=$2 \
+                    $DENSECORRES
+        fi
+
+elif [ "$1" == "stylegan2ada" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "denstylegan2adasecorres"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    $STYLEGAN2ADA \
+                    /bin/bash
+        elif [ $# -eq 2 ]
+            then
+                echo "stylegan2ada"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --name=$2 \
+                    $STYLEGAN2ADA \
+                    /bin/bash
+        fi
+
+
+elif [ "$1" == "detectron2" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "detectron2"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    $DETECTRON2
+        elif [ $# -eq 2 ]
+            then
+                echo "detectron2"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --name=$2 \
+                    $DETECTRON2
+        fi
+
+
+elif [ "$1" == "neuman_preprocess" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "neuman_preprocess"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    $NEUMAN_PREPROCESS
+        elif [ $# -eq 2 ]
+            then
+                echo "neuman_preprocess"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --name=$2 \
+                    $NEUMAN_PREPROCESS
+        fi
+
+
+elif [ "$1" == "pifuhd" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "pifuhd"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    $PIFUHD
+        elif [ $# -eq 2 ]
+            then
+                echo "pifuhd"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    $PIFUHD
+        fi
+
+
+
+elif [ "$1" == "nerfstudio" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "nerfstudio"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    $PORT \
+                    $NERFSTUDIO
+        elif [ $# -eq 2 ]
+            then
+                echo "nerfstudio"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    $PORT \
+                    $NERFSTUDIO
+        fi
+
+elif [ "$1" == "nerfacc" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "nerfacc"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    $NERFACC
+        elif [ $# -eq 2 ]
+            then
+                echo "nerfacc"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    $NERFACC
+        fi
+
+
+elif [ "$1" == "ngp_pl" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "ngp_pl"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    $NGP_PL
+        elif [ $# -eq 2 ]
+            then
+                echo "ngp_pl"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    $NGP_PL
+        fi  
+
+elif [ "$1" == "torch_ngp" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "torch_ngp"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    $TORCH_NGP
+        elif [ $# -eq 2 ]
+            then
+                echo "torch_ngp"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    $TORCH_NGP
+        fi  
+
+
+
+elif [ "$1" == "tcnn7" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "tcnn cu117"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    tcnn:0.1.7
+        elif [ $# -eq 2 ]
+            then
+                echo "tcnn cu117"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    tcnn:0.1.7
+        fi  
+
+
+elif [ "$1" == "tcnn6" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "tcnn cu116"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    tcnn:0.1.6
+        elif [ $# -eq 2 ]
+            then
+                echo "tcnn cu116"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    tcnn:0.1.6
+        fi
+
+
+elif [ "$1" == "frankmocap" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "frankmocap"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    $PORT \
+                    $FRANKMOCAP
+        elif [ $# -eq 2 ]
+            then
+                echo "frankmocap"
+                docker run -v $DEV_DIR:$DEV_DIR \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $RES_DIR:$RES_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    $PORT \
+                    $FRANKMOCAP
+        fi
+
 
 else
     echo "wrong argument"

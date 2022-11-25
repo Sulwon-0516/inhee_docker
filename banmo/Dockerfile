@@ -1,7 +1,7 @@
 FROM torch3d:0.2.10
 LABEL maintainer "InheeLee <ininin0516@gmail.com>"
 LABEL title="Banmo Docker"
-LABEL version="0.3"
+LABEL version="0.4"
 LABEL description="test docker build of banmo based on torch1.10.0+cu113+pytorch3d"
 RUN which nvcc
 RUN nvidia-smi
@@ -16,8 +16,9 @@ RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machi
 RUN which nvcc
 RUN nvidia-smi
 RUN sed -i 's/archive.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y wget vim git gcc curl build-essential
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y ffmpeg libsm6 libxext6 libopenexr-dev x11-apps freeglut3-dev
+
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y wget vim git gcc curl build-essential x11-apps
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y llvm-6.0 ffmpeg libsm6 libxext6 libxrender1 libfontconfig1 libopenexr-dev x11-apps freeglut3-dev 
 
 WORKDIR /home
 RUN git clone --recursive https://github.com/Sulwon-0516/banmo.git
