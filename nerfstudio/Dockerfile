@@ -103,7 +103,7 @@ RUN . ~/.bashrc &&  \
 
 # update & install some packages to avoid error
 RUN . ~/.bashrc && \
-    source activate frankmocap && \
+    source activate nerfstudio && \
     conda update ffmpeg -y && \
     pip install tqdm nuscenes-devkit rich tyro open3d
 
