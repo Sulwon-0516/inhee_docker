@@ -19,7 +19,7 @@ elif [ "$1" == "kaolin-wisp-screen" ]
 
 elif [ "$1" == "colmap" ]
     then
-        docker build ./colmap -t colmap:0.1 -t colmap:latest
+        docker build ./colmap -t colmap:0.1 -t colmap:latest --no-cache
 
 elif [ "$1" == "instant-ngp" ]
     then

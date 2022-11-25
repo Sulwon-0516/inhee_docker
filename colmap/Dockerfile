@@ -20,7 +20,7 @@ RUN sed -i 's/archive.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
 ARG DEBIAN_FRONTEND=noninteractive
 # Above line remove interative mode
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y wget vim git gcc curl build-essential x11-apps
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y cmake libboost-program-options-dev \
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y libboost-program-options-dev \
     libboost-filesystem-dev \
     libboost-graph-dev \
     libboost-system-dev \
@@ -38,7 +38,16 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y cmake libboo
     libatlas-base-dev \
     libsuitesparse-dev
 
-ENV PATH="/usr/local/cuda-11.4/bin:$PATH"
+ENV PATH="/usr/local/cuda-11.3/bin:$PATH"
+
+# Install cmake
+WORKDIR /home 
+RUN apt-get remove -y cmake && \ 
+    mkdir cmake && cd cmake && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.24.2/cmake-3.24.2-linux-x86_64.sh && \
+    chmod 777 ./cmake-3.24.2-linux-x86_64.sh && \
+    ./cmake-3.24.2-linux-x86_64.sh --skip-license
+ENV PATH /home/cmake/bin:$PATH
 
 WORKDIR /home
 RUN git clone --recursive https://ceres-solver.googlesource.com/ceres-solver
