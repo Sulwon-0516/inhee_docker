@@ -1,8 +1,8 @@
 FROM colmap:latest
 LABEL maintainer "InheeLee <ininin0516@gmail.com>"
-LABEL title="Neuman preprocessing docker"
-LABEL version="0.4"
-LABEL description="docker build of neuman's monocular depth estimation on torch1.10.0+cu113\n ref:https://github.com/apple/ml-neuman"
+LABEL title="pifunerf preprocessing docker"
+LABEL version="0.3"
+LABEL description="docker build of pifu preprocess stage"
 
 SHELL ["/bin/bash", "-c"]
 # Intall pytorch
@@ -114,71 +114,39 @@ RUN cd /neuman/preprocess  && \
     cd detectron2 && \
     git checkout 2048058b6790869e5add8832db2c90c556c24a3e
 
-RUN cd /neuman/preprocess  && \
-    git clone --recurse-submodules https://github.com/jiangwei221/ROMP.git && \
-    cd ROMP && \
-    git checkout f1aaf0c1d90435bbeabe39cf04b15e12906c6111
-
-RUN cd /neuman/preprocess  && \
-    git clone --recurse-submodules https://github.com/jiangwei221/mmpose.git && \
-    cd mmpose && \
-    git checkout 8b788f93200ce6485e885da0c736f114e4de8eaf
-
 RUN  . ~/.bashrc && conda init bash
 
 # depth estimation environment
 RUN . ~/.bashrc && \
-    conda create -n ROMP python==3.9.12 && \
-    source activate ROMP && \
+    conda create -n BMD python==3.8.8 && \
+    source activate BMD && \
     conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch && \
     pip install matplotlib scipy scikit-image opencv-python ray commentjson pybind11
 
-# ROMP environment
-RUN . ~/.bashrc &&\
-    source activate ROMP && \
-    conda install -c fvcore -c iopath -c conda-forge fvcore iopath && \
-    conda install -c bottler nvidiacub && \
-    conda install pytorch3d -c pytorch3d
-
-RUN . ~/.bashrc &&\
-    source activate ROMP && \
-    cd /neuman/preprocess/ROMP && \
-    pip install -r requirements.txt && \
-    pip install av
-
-
 # detectron2 environment
 RUN . ~/.bashrc && \
-    source activate ROMP && \
+    source activate BMD && \
     cd /neuman/preprocess && \
     python -m pip install -e detectron2 && \
     pip install setuptools==59.5.0 && \
     pip list
 
-# mmpose environment (mmcv 1.5.0 to avoid dependcy issues)
-RUN . /root/.bashrc && \
-    conda create -n open-mmlab python=3.9.12 -y && \
-    source activate open-mmlab && \
-	conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch && \
-    pip install openmim && \
-   	mim install mmcv-full==1.5.0 && \
-    cd /neuman/preprocess/mmpose && \
-    pip install -r requirements.txt && \
-    pip install -v -e . && \
-    mim install mmdet
+# install cmake
+WORKDIR /home 
+RUN apt-get remove -y cmake && \ 
+    cd cmake && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.24.2/cmake-3.24.2-linux-x86_64.sh && \
+    chmod 777 ./cmake-3.24.2-linux-x86_64.sh && \
+    ./cmake-3.24.2-linux-x86_64.sh --skip-license
+ENV PATH /home/cmake/bin:$PATH
 
-# NeuMan environment
-RUN . /root/.bashrc && \
-    conda create -n neuman_env python=3.9.12 -y && \
-    source activate neuman_env && \
-	conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch && \
-    conda install -c fvcore -c iopath -c conda-forge fvcore iopath && \
-    conda install -c bottler nvidiacub && \
-    conda install pytorch3d -c pytorch3d && \
-    conda install -c conda-forge igl && \
-    pip install opencv-python joblib open3d imageio tensorboardX chumpy lpips scikit-image ipython matplotlib
-
-
+# instant-ngp
+# install instant-ngp
+WORKDIR /home
+RUN git clone --recursive https://github.com/nvlabs/instant-ngp
+WORKDIR /home/instant-ngp
+RUN cmake . -B build
+RUN cmake --build build --config RelWithDebInfo -j 4
 
 
 CMD ["/bin/bash"]

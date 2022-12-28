@@ -19,7 +19,7 @@ elif [ "$1" == "kaolin-wisp-screen" ]
 
 elif [ "$1" == "colmap" ]
     then
-        docker build ./colmap -t colmap:0.1 -t colmap:latest --no-cache
+        docker build ./colmap --no-cache -t colmap:0.2 -t colmap:latest --no-cache
 
 elif [ "$1" == "instant-ngp" ]
     then
@@ -55,7 +55,12 @@ elif [ "$1" == "detectron2" ]
 
 elif [ "$1" == "neuman_preprocess" ]
     then
-        docker build ./neuman_preprocess --no-cache --tag neuman_preprocess:0.3 --tag neuman_preprocess:latest
+        docker build ./neuman_preprocess --tag neuman_preprocess:0.4 --tag neuman_preprocess:latest
+
+elif [ "$1" == "pifunerf_preprocess" ]
+    then
+        docker build ./pifunerf_preprocess --tag pifunerf_preprocess:0.1 --tag pifunerf_preprocess:latest
+
 
 elif [ "$1" == "pifuhd" ]
     then
@@ -92,6 +97,10 @@ elif [ "$1" == "tcnn" ]
 elif [ "$1" == "frankmocap" ]
     then
         docker build ./frankmocap --tag frankmocap:0.1 --tag frankmocap:latest
+
+elif [ "$1" == "hypernerf_jax" ]
+    then
+        docker build ./hypernerf_jax --tag hypernerf_jax:0.1 --tag hypernerf_jax:latest
 
 else
     echo "wrong argument"
