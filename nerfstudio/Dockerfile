@@ -105,7 +105,7 @@ RUN . ~/.bashrc &&  \
 RUN . ~/.bashrc && \
     source activate nerfstudio && \
     conda update ffmpeg -y && \
-    pip install tqdm nuscenes-devkit rich tyro open3d
+    pip install tqdm nuscenes-devkit rich tyro open3d trimesh
 
 
 

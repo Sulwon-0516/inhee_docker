@@ -91,7 +91,7 @@ RUN echo "Installing apt packages..." \
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
-    /opt/conda/bin/conda clean -tipsy && \
+    /opt/conda/bin/conda clean -ay && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "conda activate base" >> ~/.bashrc
@@ -101,7 +101,7 @@ RUN conda init bash && \
 
 WORKDIR /
 
-RUN git clone https://github.com/apple/ml-neuman.git && \
+RUN git clone https://github.com/Sulwon-0516/ml-neuman.git && \
     mv ml-neuman neuman
 
 RUN cd /neuman/preprocess  && \
@@ -178,7 +178,7 @@ RUN . /root/.bashrc && \
     conda install -c conda-forge igl && \
     pip install opencv-python joblib open3d imageio tensorboardX chumpy lpips scikit-image ipython matplotlib
 
-
+RUN apt -y install unzip
 
 
 CMD ["/bin/bash"]
