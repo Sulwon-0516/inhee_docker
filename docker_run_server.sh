@@ -16,7 +16,7 @@ STYLEGAN2ADA="sg2ada:latest"
 DETECTRON2="detectron2:latest"
 NEUMAN_PREPROCESS="neuman_preprocess:latest"
 PIFUHD="pifuhd:latest"
-NERFSTUDIO="nerfstudio:modified"
+NERFSTUDIO="nerfstudio:humannerf"
 NERFACC="nerfacc:latest"
 NGP_PL="ngp_pl:latest"
 TORCH_NGP="torch_ngp:latest"
@@ -31,7 +31,7 @@ PORT="-p 12000:7010"
 
 #GPUS="all"
 #GPUS='"device=5,6,7"'
-GPUS='"device=4"'
+GPUS='"device=4,5,6,7"'
 
 if [ $# -eq 0 ]
     then 
