@@ -1,8 +1,10 @@
 #!/bin/bash
 # Here I made a file to run docker file with mounting folders easily.
-DEV_DIR="/home/inhee/VCL/insect_recon"
+DEV_DIR="/home/inhee/VCL"
 HDD_DIR="/mnt/hdd"
 RES_DIR="/home/inhee/VCL/results"
+
+VCL_DIR="/home/inhee/VCL"
 
 KAOLIN="kaolin:0.5"
 KAOLIN_WISP="kaolin-wisp:0.2"
@@ -21,6 +23,8 @@ NERFACC="nerfacc:latest"
 NGP_PL="ngp_pl:latest"
 TORCH_NGP="torch_ngp:latest"
 FRANKMOCAP="frankmocap:latest"
+
+INSTANT_AVATAR="instantavatar:0.1"
 
 
 DISPLAY=":1"
@@ -644,6 +648,38 @@ elif [ "$1" == "frankmocap" ]
                     $FRANKMOCAP
         fi
 
+elif [ "$1" == "instantavatar" ]
+    then
+        if [ $# -eq 1 ]
+            then
+                echo "instantavatar"
+                docker run \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $VCL_DIR:$VCL_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    $PORT \
+                    $INSTANT_AVATAR
+        elif [ $# -eq 2 ]
+            then
+                echo "instantavatar"
+                docker run \
+                    -v $HDD_DIR:$HDD_DIR \
+                    -v $VCL_DIR:$VCL_DIR \
+                    --shm-size=$SHM_SIZE \
+                    -v /tmp/.X11-unix:/tmp/.X11-unix \
+                    -e DISPLAY=unix$DISPLAY \
+                    -it \
+                    --gpus=all \
+                    --net=host \
+                    --name=$2 \
+                    $PORT \
+                    $INSTANT_AVATAR
+        fi
 
 else
     echo "wrong argument"
