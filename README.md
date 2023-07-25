@@ -1,10 +1,6 @@
 # inhee_docker
 Dockerfiles for 3D vision research 
 
-Currently, it includes colmap, kaolin, kaolin-wisp
-
-It will extended to handle banmo, torch3d (soon)
-
 You should install nvidia-docker, recent nvidia-driver and most Ampere GPUs RTX 30X0 (recommended) 
 
 ## Before build files
