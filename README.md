@@ -71,4 +71,4 @@ It seems like it's (for me) almost impossible to build with dockerfile.
 We can instead try to build instant-ngp inside container & commit to generate docker image. 
 
 ### Package/Program positions
-Everythings are positioned in `/home` in container
+Everythings are placed in `/home` in container
