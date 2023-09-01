@@ -1,0 +1,12 @@
+common/
+
+PythonAPI/halpecocotools/__init__.pyc
+PythonAPI/halpecocotools/_mask.c
+PythonAPI/halpecocotools/_mask.so
+PythonAPI/halpecocotools/_mask*.so
+PythonAPI/halpecocotools/coco.pyc
+PythonAPI/halpecocotools/cocoeval.pyc
+PythonAPI/halpecocotools/mask.pyc
+PythonAPI/halpecocotools/__pycache__/
+PythonAPI/dist/
+PythonAPI/halpecocotools.egg-info/

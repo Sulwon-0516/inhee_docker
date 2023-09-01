@@ -1,0 +1,105 @@
+FROM nvidia/cuda:11.6.2-cudnn8-devel-ubuntu20.04
+LABEL maintainer "InheeLee <ininin0516@gmail.com>"
+LABEL title="gdna_pifu_base"
+LABEL version="0.2"
+LABEL description="docker build of nerfstudio based on torch1.12.1+cu116"
+RUN which nvcc
+RUN nvidia-smi
+
+
+SHELL ["/bin/bash", "-c"]
+ARG DEBIAN_FRONTEND=noninteractive
+#0RUN rm /etc/apt/sources.list.d/cuda.list
+#RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+RUN apt-key del 7fa2af80
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
+# The above 5 lines : handling issues of nvidia docker (2022)
+RUN sed -i 's/archive.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y wget vim git gcc curl build-essential
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y ffmpeg libsm6 libxext6 libopenexr-dev x11-apps freeglut3-dev cmake libboost-program-options-dev \
+    libboost-filesystem-dev \
+    libboost-graph-dev \
+    libboost-system-dev \
+    libboost-test-dev \
+    libeigen3-dev \
+    libsuitesparse-dev \
+    libfreeimage-dev \
+    libmetis-dev \
+    libgoogle-glog-dev \
+    libgflags-dev \
+    libglew-dev \
+    qtbase5-dev \
+    libqt5opengl5-dev \
+    libcgal-dev \
+    libatlas-base-dev \
+    libsuitesparse-dev \
+    libprotobuf-dev \
+    protobuf-compiler
+
+ENV PATH /usr/local/cuda-11.6/bin:$PATH
+ENV LD_LIBRARY_PATH /usr/local/cuda-11.6/lib64:$LD_LIBRARY_PATH
+
+# Install MiniConda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh && \
+    # /opt/conda/bin/conda clean -tipsy && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    echo "conda activate base" >> ~/.bashrc
+ENV PATH /opt/conda/bin:$PATH
+
+RUN  . ~/.bashrc && conda init bash && \
+    conda update conda && \
+    conda install -n base conda-libmamba-solver && \
+    conda config --set solver libmamba
+
+# Install basic torch (11.6)
+RUN . ~/.bashrc && \ 
+    conda create -n gdna python=3.7.16 -y && \
+    source activate gdna && \
+    conda install pytorch==1.12.1 torchvision torchaudio cudatoolkit=11.6 -c pytorch -c conda-forge -y
+
+
+# Install cmake
+WORKDIR /home 
+RUN apt-get remove -y cmake && \ 
+    mkdir cmake && cd cmake && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.24.2/cmake-3.24.2-linux-x86_64.sh && \
+    chmod 777 ./cmake-3.24.2-linux-x86_64.sh && \
+    ./cmake-3.24.2-linux-x86_64.sh --skip-license
+ENV PATH /home/cmake/bin:$PATH
+
+
+# install some packages
+RUN . ~/.bashrc && \
+    source activate gdna && \
+    pip install --upgrade pip && pip install scikit-image matplotlib imageio plotly opencv-python-headless black usort flake8 flake8-bugbear flake8-comprehensions && \
+    pip install scikit-image matplotlib imageio plotly opencv-python-headless tqdm scikit-image PyOpenGL
+
+# install gdna dependency
+WORKDIR /home
+RUN . ~/.bashrc &&  \ 
+    source activate gdna && \
+    conda install -c fvcore -c iopath -c conda-forge fvcore iopath && \
+    conda install -c bottler nvidiacub && \
+    pip install scikit-image matplotlib imageio plotly opencv-python-headless tqdm scikit-image PyOpenGL && \
+    pip install usd-core==20.11 torchmetrics==0.6.0 torchgeometry==0.1.2 pytorch-lightning==1.3.3 imageio hydra-core==1.0.6 wandb trimesh pandas chumpy Cython==0.29.20 imageio-ffmpeg setuptools==65.6.3 && \
+    conda install pytorch3d -c pytorch3d && \
+    conda install ffmpeg
+
+# install kaolin
+# it should be done in different env
+# WORKDIR /home
+RUN . ~/.bashrc &&  \ 
+    source activate gdna && \
+    git clone https://github.com/NVIDIAGameWorks/kaolin && \
+    cd kaolin && \
+    git checkout v0.9.0 && \
+    python setup.py develop
+
+
+
+EXPOSE 80 22 7008
+CMD ["/bin/bash"]
